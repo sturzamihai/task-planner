@@ -8,5 +8,9 @@ namespace TaskPlanner
 {
     internal class Project
     {
+        private string title;
+        private string description;
+        private List<Task> tasks;
+        private List<Department> departments;
     }
 }
