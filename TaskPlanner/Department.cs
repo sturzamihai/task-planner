@@ -7,7 +7,7 @@ using TaskPlanner.Users;
 
 namespace TaskPlanner
 {
-    internal class Department
+    public class Department
     {
         private string name;
         private List<User> members;
@@ -23,5 +23,7 @@ namespace TaskPlanner
             this.name = name;
             members = new List<User>();
         }
+
+        public string Name { get { return name; } }
     }
 }

@@ -111,6 +111,7 @@
             // 
             // AddUserForm
             // 
+            AcceptButton = btnAdd;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(273, 266);
@@ -123,7 +124,7 @@
             Controls.Add(tbName);
             Controls.Add(label1);
             Name = "AddUserForm";
-            Text = "Add User";
+            Text = "Add User - Task Planner";
             ResumeLayout(false);
             PerformLayout();
         }

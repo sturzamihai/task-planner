@@ -1,3 +1,4 @@
+using TaskPlanner.Projects;
 using TaskPlanner.Users;
 
 namespace TaskPlanner
@@ -23,6 +24,21 @@ namespace TaskPlanner
             {
                 users.Add(addUserForm.NewUser);
             }
+        }
+
+        private void btnAddProj_Click(object sender, EventArgs e)
+        {
+            List<Client> clients = new List<Client>();
+            foreach (User client in users)
+            {
+                if (typeof(Client).IsInstanceOfType(client))
+                {
+                    clients.Add((Client)client);
+                }
+            }
+
+            AddProjectForm newProject = new AddProjectForm(clients);
+            newProject.ShowDialog();
         }
     }
 }
