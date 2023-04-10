@@ -162,6 +162,7 @@
             btnCreate.TabIndex = 17;
             btnCreate.Text = "Create Project";
             btnCreate.UseVisualStyleBackColor = true;
+            btnCreate.Click += btnCreate_Click;
             // 
             // label8
             // 
@@ -175,6 +176,7 @@
             // 
             // AddProjectForm
             // 
+            AcceptButton = btnCreate;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(742, 288);

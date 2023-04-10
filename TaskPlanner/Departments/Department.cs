@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskPlanner.Users;
 
-namespace TaskPlanner
+namespace TaskPlanner.Departments
 {
     public class Department
     {
@@ -25,5 +25,6 @@ namespace TaskPlanner
         }
 
         public string Name { get { return name; } }
+        public List<User> Members { get {  return members; } }
     }
 }

@@ -73,20 +73,21 @@
             // addUserToolStripMenuItem
             // 
             addUserToolStripMenuItem.Name = "addUserToolStripMenuItem";
-            addUserToolStripMenuItem.Size = new Size(161, 22);
+            addUserToolStripMenuItem.Size = new Size(180, 22);
             addUserToolStripMenuItem.Text = "Add user";
             addUserToolStripMenuItem.Click += addUserToolStripMenuItem_Click;
             // 
             // addDepartmentToolStripMenuItem
             // 
             addDepartmentToolStripMenuItem.Name = "addDepartmentToolStripMenuItem";
-            addDepartmentToolStripMenuItem.Size = new Size(161, 22);
+            addDepartmentToolStripMenuItem.Size = new Size(180, 22);
             addDepartmentToolStripMenuItem.Text = "Add department";
+            addDepartmentToolStripMenuItem.Click += addDepartmentToolStripMenuItem_Click;
             // 
             // manageUsersToolStripMenuItem
             // 
             manageUsersToolStripMenuItem.Name = "manageUsersToolStripMenuItem";
-            manageUsersToolStripMenuItem.Size = new Size(161, 22);
+            manageUsersToolStripMenuItem.Size = new Size(180, 22);
             manageUsersToolStripMenuItem.Text = "Manage users";
             // 
             // btnAddTask
