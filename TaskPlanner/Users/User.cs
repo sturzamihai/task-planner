@@ -10,11 +10,13 @@ namespace TaskPlanner.Users
     {
         protected string name;
         protected string email;
+        private string password;
 
         protected User(string name, string email)
         {
             this.name = name;
             this.email = email;
+            this.password = ""; // Will implement
         }
 
         public string Name { get { return name; } }
