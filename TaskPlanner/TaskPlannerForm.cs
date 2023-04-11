@@ -1,4 +1,5 @@
 using TaskPlanner.Departments;
+using TaskPlanner.Persistance;
 using TaskPlanner.Projects;
 using TaskPlanner.Users;
 
@@ -6,20 +7,21 @@ namespace TaskPlanner
 {
     public partial class TaskPlanner : Form
     {
-        private List<User> users;
-        private List<Department> departments;
-        private List<Project> projects;
+        DataContext dataContext;
 
         public TaskPlanner()
         {
             InitializeComponent();
-            users = new List<User>();
-            departments = new List<Department>();
-            projects = new List<Project>();
+            dataContext = new DataContext();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            List<Project> projects = dataContext.Projects.ToList();
+            foreach (Project project in projects)
+            {
+                lbProjects.Items.Add(project.Title);
+            }
         }
 
         private void addUserToolStripMenuItem_Click(object sender, EventArgs e)
@@ -27,40 +29,33 @@ namespace TaskPlanner
             AddUserForm addUserForm = new AddUserForm();
             if (addUserForm.ShowDialog() == DialogResult.OK)
             {
-                users.Add(addUserForm.NewUser);
+                dataContext.Users.Add(addUserForm.NewUser);
+                dataContext.SaveChanges();
             }
         }
 
         private void btnAddProj_Click(object sender, EventArgs e)
         {
-            List<Client> clients = new List<Client>();
-            foreach (User client in users)
-            {
-                if (typeof(Client).IsInstanceOfType(client))
-                {
-                    clients.Add((Client)client);
-                }
-            }
+            List<Client> clients = dataContext.Clients.ToList();
+            List<Department> departments = dataContext.Departments.ToList();
 
-            AddProjectForm newProject = new AddProjectForm(clients, departments);
-            if (newProject.ShowDialog() == DialogResult.OK)
+            AddProjectForm addProjectForm = new AddProjectForm(clients, departments);
+            if (addProjectForm.ShowDialog() == DialogResult.OK)
             {
-                projects.Add(newProject.NewProject);
-            }
-
-            lbProjects.Items.Clear();
-            foreach (Project project in projects)
-            {
-                lbProjects.Items.Add(project.Title);
+                dataContext.Projects.Add(addProjectForm.NewProject);
+                lbProjects.Items.Add(addProjectForm.NewProject.Title);
+                dataContext.SaveChanges();
             }
         }
 
         private void addDepartmentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AddDepartmentForm newDepartment = new AddDepartmentForm(users);
-            if(newDepartment.ShowDialog() == DialogResult.OK)
+            List<User> users = dataContext.Users.ToList();
+            AddDepartmentForm addDepartmentForm = new AddDepartmentForm(users);
+            if(addDepartmentForm.ShowDialog() == DialogResult.OK)
             {
-                departments.Add(newDepartment.NewDepartment);
+                dataContext.Departments.Add(addDepartmentForm.NewDepartment);
+                dataContext.SaveChanges();
             }
         }
     }

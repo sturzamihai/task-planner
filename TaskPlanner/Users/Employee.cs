@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace TaskPlanner.Users
 {
-    internal class Employee : User
+    public class Employee : User
     {
-        public Employee(string name, string email) : base(name, email)
-        {
 
-        }
     }
 }

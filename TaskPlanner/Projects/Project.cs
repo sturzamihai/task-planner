@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,25 +11,23 @@ namespace TaskPlanner.Projects
 {
     public class Project
     {
-        private string title;
-        private string description;
-        private DateTime start;
-        private DateTime end;
-        private List<Task> tasks;
-        private List<Department> departments;
-        private Client? client;
+        public int Id { get; set; }
 
-        public Project(string title, string description, DateTime start, DateTime end, List<Department> departments, Client? client)
-        {
-            this.title = title;
-            this.description = description;
-            this.start = start;
-            this.end = end;
-            this.tasks = new List<Task>();
-            this.departments = departments;
-            this.client = client;
-        }
+        [Required]
+        public string Title { get; set; }
 
-        public string Title { get { return title; } set { title = value; } }
+        public string Description { get; set; }
+
+        [Required]
+        public DateTime Start { get; set; }
+
+        [Required]
+        public DateTime End { get; set; }
+
+        public ICollection<Task> Tasks { get; set; }
+
+        public ICollection<Department> Departments { get; set; }
+
+        public Client? Client { get; set; }
     }
 }

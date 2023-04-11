@@ -41,7 +41,7 @@ namespace TaskPlanner.Departments
                 return;
             }
 
-            this.NewDepartment = new Department(tbName.Text);
+            this.NewDepartment = new Department() { Name = tbName.Text, Members = new List<User>() };
             foreach (int i in clbMembers.CheckedIndices)
             {
                 NewDepartment.Members.Add(members[i]);

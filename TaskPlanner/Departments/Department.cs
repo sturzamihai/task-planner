@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,22 +10,11 @@ namespace TaskPlanner.Departments
 {
     public class Department
     {
-        private string name;
-        private List<User> members;
+        public int Id { get; set; }
 
-        public Department()
-        {
-            name = "N/A";
-            members = new List<User>();
-        }
+        [Required]
+        public string Name { get; set; }
 
-        public Department(string name)
-        {
-            this.name = name;
-            members = new List<User>();
-        }
-
-        public string Name { get { return name; } }
-        public List<User> Members { get {  return members; } }
+        public List<User> Members { get; set; }
     }
 }

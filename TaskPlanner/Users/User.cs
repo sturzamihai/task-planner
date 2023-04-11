@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,18 +9,19 @@ namespace TaskPlanner.Users
 {
     public abstract class User
     {
-        protected string name;
-        protected string email;
+        public int Id { get; set; }
+
+        [Required]
+        public string Name { get; set; }
+
+        [Required]
+        public string Email { get; set; }
+
         private string password;
-
-        protected User(string name, string email)
+        private string Password // TODO: Update with password hashing logic
         {
-            this.name = name;
-            this.email = email;
-            this.password = ""; // Will implement
+            get { return password; }
+            set { password = value; }
         }
-
-        public string Name { get { return name; } }
-        public string Email { get { return email; } }
     }
 }

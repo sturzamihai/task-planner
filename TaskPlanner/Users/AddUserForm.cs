@@ -45,13 +45,13 @@ namespace TaskPlanner.Users
             switch (cbRole.SelectedIndex)
             {
                 case 0:
-                    NewUser = new Employee(tbName.Text, tbEmail.Text);
+                    NewUser = new Employee() { Name = tbEmail.Text, Email = tbEmail.Text };
                     break;
                 case 1:
-                    NewUser = new Manager(tbName.Text, tbEmail.Text);
+                    NewUser = new Manager() { Name = tbEmail.Text, Email = tbEmail.Text };
                     break;
                 case 2:
-                    NewUser = new Client(tbName.Text, tbEmail.Text);
+                    NewUser = new Client() { Name = tbEmail.Text, Email = tbEmail.Text };
                     break;
                 default:
                     MessageBox.Show("The selected role is invalid.");
