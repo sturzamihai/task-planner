@@ -5,10 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using TaskPlanner.Departments;
-using TaskPlanner.Users;
+using TaskPlanner.Entities;
+using TaskPlanner.Entities.Users;
 
 namespace TaskPlanner.Projects
 {
@@ -86,7 +85,7 @@ namespace TaskPlanner.Projects
                 Start = dtStart.Value,
                 End = dtEnd.Value,
                 Departments = selectedDepartments,
-                Tasks = new List<Task>(),
+                Tasks = new List<Entities.Task>(),
                 Client = selectedClient
             };
 

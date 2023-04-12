@@ -1,3 +1,5 @@
+using TaskPlanner.Persistance;
+
 namespace TaskPlanner
 {
     internal static class Program
@@ -11,7 +13,10 @@ namespace TaskPlanner
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new TaskPlanner());
+
+            DataContext ctx = new DataContext();
+
+            Application.Run(new TaskPlanner(ctx));
         }
     }
 }

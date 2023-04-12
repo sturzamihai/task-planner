@@ -8,6 +8,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TaskPlanner.Entities.Users;
 
 namespace TaskPlanner.Users
 {

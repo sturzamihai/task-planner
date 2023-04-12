@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskPlanner.Users
+namespace TaskPlanner.Entities.Users
 {
     public abstract class User
     {
@@ -18,6 +18,7 @@ namespace TaskPlanner.Users
         public string Email { get; set; }
 
         private string password;
+        [Required]
         private string Password // TODO: Update with password hashing logic
         {
             get { return password; }

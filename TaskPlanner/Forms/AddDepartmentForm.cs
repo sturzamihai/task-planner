@@ -7,7 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TaskPlanner.Users;
+using TaskPlanner.Entities;
+using TaskPlanner.Entities.Users;
 
 namespace TaskPlanner.Departments
 {
@@ -21,7 +22,7 @@ namespace TaskPlanner.Departments
         {
             InitializeComponent();
             this.members = members;
-            foreach(User member in members)
+            foreach (User member in members)
             {
                 clbMembers.Items.Add(member.Name);
             }

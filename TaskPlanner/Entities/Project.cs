@@ -4,10 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskPlanner.Departments;
-using TaskPlanner.Users;
+using TaskPlanner.Entities.Users;
 
-namespace TaskPlanner.Projects
+namespace TaskPlanner.Entities
 {
     public class Project
     {

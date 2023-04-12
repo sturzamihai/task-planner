@@ -1,4 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using TaskPlanner.Departments;
+using TaskPlanner.Entities;
+using TaskPlanner.Entities.Users;
 using TaskPlanner.Persistance;
 using TaskPlanner.Projects;
 using TaskPlanner.Users;
@@ -8,20 +11,16 @@ namespace TaskPlanner
     public partial class TaskPlanner : Form
     {
         DataContext dataContext;
-
-        public TaskPlanner()
+        public TaskPlanner(DataContext dataContext)
         {
             InitializeComponent();
-            dataContext = new DataContext();
+            this.dataContext = dataContext;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            List<Project> projects = dataContext.Projects.ToList();
-            foreach (Project project in projects)
-            {
-                lbProjects.Items.Add(project.Title);
-            }
+            dataContext.Projects.Load();
+            this.projectBindingSource.DataSource = dataContext.Projects.Local.ToBindingList();
         }
 
         private void addUserToolStripMenuItem_Click(object sender, EventArgs e)
@@ -43,8 +42,9 @@ namespace TaskPlanner
             if (addProjectForm.ShowDialog() == DialogResult.OK)
             {
                 dataContext.Projects.Add(addProjectForm.NewProject);
-                lbProjects.Items.Add(addProjectForm.NewProject.Title);
                 dataContext.SaveChanges();
+
+                lbProjects.Refresh();
             }
         }
 
@@ -52,11 +52,41 @@ namespace TaskPlanner
         {
             List<User> users = dataContext.Users.ToList();
             AddDepartmentForm addDepartmentForm = new AddDepartmentForm(users);
-            if(addDepartmentForm.ShowDialog() == DialogResult.OK)
+            if (addDepartmentForm.ShowDialog() == DialogResult.OK)
             {
                 dataContext.Departments.Add(addDepartmentForm.NewDepartment);
                 dataContext.SaveChanges();
             }
+        }
+
+        private void lbProjects_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int? projectId = ((Project)lbProjects.SelectedItem)?.Id;
+
+            if (projectId == null) return;
+
+            Project selectedProject = dataContext.Projects.Include(p => p.Client).Single(p => p.Id == projectId);
+
+            if (selectedProject == null) return;
+
+            labelProjName.Text = selectedProject.Title;
+            labelProjDesc.Text = selectedProject.Description;
+
+            gbProjInfo.Visible = true;
+            labelProjStart.Text = $"Start date: {selectedProject.Start.ToString("dd.MM.yyyy")}";
+            labelProjEnd.Text = $"End date: {selectedProject.End.ToString("dd.M.yyyy")}";
+
+            labelProjClient.Text = selectedProject.Client != null ? $"Client: {selectedProject.Client.Name}" : String.Empty;
+
+            dgTasks.Visible = true;
+
+            dataContext.Entry(selectedProject).Collection(p => p.Tasks).Load();
+            taskBindingSource.DataSource = dataContext.Tasks.Local.ToList();
+        }
+
+        private void dgTasks_UserAddedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            dataContext.SaveChanges();
         }
     }
 }

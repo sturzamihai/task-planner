@@ -4,17 +4,19 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskPlanner.Users;
+using TaskPlanner.Entities.Users;
 
-namespace TaskPlanner
+namespace TaskPlanner.Entities
 {
-    public class Task
+    public class TrackedTime
     {
         public int Id { get; set; }
 
         [Required]
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public User? Asignee { get; set; }
+        public User User { get; set; }
+
+        // In seconds
+        [Required]
+        public int Interval { get; set; }
     }
 }

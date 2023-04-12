@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskPlanner.Users
+namespace TaskPlanner.Entities.Users
 {
-    public class Employee : User
+    public class Manager : User
     {
 
     }

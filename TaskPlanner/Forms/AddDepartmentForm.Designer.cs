@@ -33,6 +33,7 @@
             tbName = new TextBox();
             clbMembers = new CheckedListBox();
             btnAdd = new Button();
+            label3 = new Label();
             SuspendLayout();
             // 
             // label1
@@ -64,9 +65,9 @@
             // clbMembers
             // 
             clbMembers.FormattingEnabled = true;
-            clbMembers.Location = new Point(12, 97);
+            clbMembers.Location = new Point(12, 115);
             clbMembers.Name = "clbMembers";
-            clbMembers.Size = new Size(251, 148);
+            clbMembers.Size = new Size(251, 130);
             clbMembers.TabIndex = 7;
             // 
             // btnAdd
@@ -79,12 +80,22 @@
             btnAdd.UseVisualStyleBackColor = true;
             btnAdd.Click += btnAdd_Click;
             // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(9, 97);
+            label3.Name = "label3";
+            label3.Size = new Size(57, 15);
+            label3.TabIndex = 9;
+            label3.Text = "Members";
+            // 
             // AddDepartmentForm
             // 
             AcceptButton = btnAdd;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(275, 292);
+            Controls.Add(label3);
             Controls.Add(btnAdd);
             Controls.Add(clbMembers);
             Controls.Add(label2);
@@ -103,5 +114,6 @@
         private TextBox tbName;
         private CheckedListBox clbMembers;
         private Button btnAdd;
+        private Label label3;
     }
 }
