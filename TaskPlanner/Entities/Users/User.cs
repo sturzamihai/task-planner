@@ -17,12 +17,7 @@ namespace TaskPlanner.Entities.Users
         [Required]
         public string Email { get; set; }
 
-        private string password;
         [Required]
-        private string Password // TODO: Update with password hashing logic
-        {
-            get { return password; }
-            set { password = value; }
-        }
+        public string Password { get; set; }
     }
 }

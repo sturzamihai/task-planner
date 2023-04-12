@@ -8,6 +8,15 @@ using TaskPlanner.Entities.Users;
 
 namespace TaskPlanner.Entities
 {
+    public enum TaskStatus
+    {
+        Backlog,
+        ToDo,
+        InProgress,
+        InReview,
+        Done
+    }
+
     public class Task
     {
         public int Id { get; set; }
@@ -19,7 +28,10 @@ namespace TaskPlanner.Entities
 
         public User? Asignee { get; set; }
 
-        public ICollection<TrackedTime> TimesTracked { get; set; } = new List<TrackedTime>();
+        [Required]
+        public TaskStatus Status { get; set; }
+
+        public List<TrackedTime> TimesTracked { get; set; } = new List<TrackedTime>();
 
         // Returns tracked time in seconds for this Task
         public int CalculateTrackedTime()

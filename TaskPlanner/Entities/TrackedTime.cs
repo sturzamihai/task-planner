@@ -17,6 +17,6 @@ namespace TaskPlanner.Entities
 
         // In seconds
         [Required]
-        public int Interval { get; set; }
+        public int Interval { get; set; } = 0;
     }
 }

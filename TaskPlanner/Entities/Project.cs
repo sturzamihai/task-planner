@@ -23,9 +23,9 @@ namespace TaskPlanner.Entities
         [Required]
         public DateTime End { get; set; }
 
-        public ICollection<Task> Tasks { get; set; }
+        public List<Task> Tasks { get; set; } = new List<Task>();
 
-        public ICollection<Department> Departments { get; set; }
+        public List<Department> Departments { get; set; } = new List<Department>();
 
         public Client? Client { get; set; }
     }

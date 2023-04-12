@@ -36,6 +36,8 @@
             btnAdd = new Button();
             cbRole = new ComboBox();
             label4 = new Label();
+            label5 = new Label();
+            tbPassword = new TextBox();
             SuspendLayout();
             // 
             // label1
@@ -82,7 +84,7 @@
             // 
             // btnAdd
             // 
-            btnAdd.Location = new Point(12, 231);
+            btnAdd.Location = new Point(12, 276);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(249, 23);
             btnAdd.TabIndex = 6;
@@ -109,12 +111,30 @@
             label4.TabIndex = 8;
             label4.Text = "Role";
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(9, 219);
+            label5.Name = "label5";
+            label5.Size = new Size(57, 15);
+            label5.TabIndex = 10;
+            label5.Text = "Password";
+            // 
+            // tbPassword
+            // 
+            tbPassword.Location = new Point(12, 237);
+            tbPassword.Name = "tbPassword";
+            tbPassword.Size = new Size(249, 23);
+            tbPassword.TabIndex = 9;
+            // 
             // AddUserForm
             // 
             AcceptButton = btnAdd;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(273, 266);
+            ClientSize = new Size(273, 311);
+            Controls.Add(label5);
+            Controls.Add(tbPassword);
             Controls.Add(label4);
             Controls.Add(cbRole);
             Controls.Add(btnAdd);
@@ -139,5 +159,7 @@
         private Button btnAdd;
         private ComboBox cbRole;
         private Label label4;
+        private Label label5;
+        private TextBox tbPassword;
     }
 }
