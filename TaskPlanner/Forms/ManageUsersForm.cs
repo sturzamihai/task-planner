@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TaskPlanner.Users
+namespace TaskPlanner.Forms
 {
-    public partial class LoginForm : Form
+    public partial class ManageUsersForm : Form
     {
-        public LoginForm()
+        public ManageUsersForm()
         {
             InitializeComponent();
         }

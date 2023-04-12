@@ -5,10 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using TaskPlanner.Departments;
-using TaskPlanner.Users;
+using TaskPlanner.Entities;
+using TaskPlanner.Entities.Users;
 
 namespace TaskPlanner.Projects
 {
@@ -49,37 +48,47 @@ namespace TaskPlanner.Projects
                 return;
             }
 
-            if(departments.Count > 0 && clbDepartments.CheckedIndices.Count == 0)
+            if (departments.Count > 0 && clbDepartments.CheckedIndices.Count == 0)
             {
                 MessageBox.Show("You should select at least one department.");
                 return;
             }
 
-            if(dtStart.Checked == false || dtEnd.Checked == false)
+            if (dtStart.Checked == false || dtEnd.Checked == false)
             {
                 MessageBox.Show("The dates you entered are invalid.");
                 return;
             }
 
-            if(dtStart.Value >= dtEnd.Value)
+            if (dtStart.Value >= dtEnd.Value)
             {
                 MessageBox.Show("The start date can't be later or in the same day as the end date.");
                 return;
             }
 
             List<Department> selectedDepartments = new List<Department>();
-            foreach(int i in clbDepartments.CheckedIndices)
+            foreach (int i in clbDepartments.CheckedIndices)
             {
                 selectedDepartments.Add(departments[i]);
             }
 
             Client? selectedClient = null;
-            if(cbClient.SelectedIndex >= 0)
+            if (cbClient.SelectedIndex >= 0)
             {
                 selectedClient = clients[cbClient.SelectedIndex];
             }
 
-            NewProject = new Project(tbName.Text, tbDescription.Text, dtStart.Value, dtEnd.Value, selectedDepartments, selectedClient);
+            NewProject = new Project()
+            {
+                Title = tbName.Text,
+                Description = tbDescription.Text,
+                Start = dtStart.Value,
+                End = dtEnd.Value,
+                Departments = selectedDepartments,
+                Tasks = new List<Entities.Task>(),
+                Client = selectedClient
+            };
+
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

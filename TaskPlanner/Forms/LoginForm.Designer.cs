@@ -29,44 +29,36 @@
         private void InitializeComponent()
         {
             label1 = new Label();
-            label2 = new Label();
-            textBox1 = new TextBox();
+            tbEmail = new TextBox();
             label3 = new Label();
             label4 = new Label();
-            textBox2 = new TextBox();
-            button1 = new Button();
+            tbPassword = new TextBox();
+            btnLogin = new Button();
+            pictureBox1 = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(9, 9);
+            label1.Location = new Point(6, 199);
             label1.Name = "label1";
             label1.Size = new Size(64, 25);
             label1.TabIndex = 0;
             label1.Text = "Log In";
             // 
-            // label2
+            // tbEmail
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label2.Location = new Point(90, 9);
-            label2.Name = "label2";
-            label2.Size = new Size(0, 25);
-            label2.TabIndex = 1;
-            // 
-            // textBox1
-            // 
-            textBox1.Location = new Point(12, 77);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(196, 23);
-            textBox1.TabIndex = 2;
+            tbEmail.Location = new Point(12, 253);
+            tbEmail.Name = "tbEmail";
+            tbEmail.Size = new Size(297, 23);
+            tbEmail.TabIndex = 2;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(9, 59);
+            label3.Location = new Point(9, 235);
             label3.Name = "label3";
             label3.Size = new Size(36, 15);
             label3.TabIndex = 3;
@@ -75,42 +67,56 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(9, 113);
+            label4.Location = new Point(9, 289);
             label4.Name = "label4";
             label4.Size = new Size(57, 15);
             label4.TabIndex = 5;
             label4.Text = "Password";
             // 
-            // textBox2
+            // tbPassword
             // 
-            textBox2.Location = new Point(12, 131);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(196, 23);
-            textBox2.TabIndex = 4;
+            tbPassword.Location = new Point(12, 307);
+            tbPassword.Name = "tbPassword";
+            tbPassword.Size = new Size(297, 23);
+            tbPassword.TabIndex = 4;
             // 
-            // button1
+            // btnLogin
             // 
-            button1.Location = new Point(12, 180);
-            button1.Name = "button1";
-            button1.Size = new Size(196, 23);
-            button1.TabIndex = 6;
-            button1.Text = "Log in";
-            button1.UseVisualStyleBackColor = true;
+            btnLogin.Location = new Point(12, 356);
+            btnLogin.Name = "btnLogin";
+            btnLogin.Size = new Size(297, 23);
+            btnLogin.TabIndex = 6;
+            btnLogin.Text = "Log in";
+            btnLogin.UseVisualStyleBackColor = true;
+            btnLogin.Click += button1_Click;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.BackgroundImage = Properties.Resources.TaskPlannerLogo;
+            pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
+            pictureBox1.Location = new Point(12, 12);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(297, 170);
+            pictureBox1.TabIndex = 7;
+            pictureBox1.TabStop = false;
             // 
             // LoginForm
             // 
+            AcceptButton = btnLogin;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(220, 217);
-            Controls.Add(button1);
+            ClientSize = new Size(321, 392);
+            Controls.Add(pictureBox1);
+            Controls.Add(btnLogin);
             Controls.Add(label4);
-            Controls.Add(textBox2);
+            Controls.Add(tbPassword);
             Controls.Add(label3);
-            Controls.Add(textBox1);
-            Controls.Add(label2);
+            Controls.Add(tbEmail);
             Controls.Add(label1);
             Name = "LoginForm";
             Text = "Log in - Task Planner";
+            Load += LoginForm_Load;
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -118,11 +124,11 @@
         #endregion
 
         private Label label1;
-        private Label label2;
-        private TextBox textBox1;
+        private TextBox tbEmail;
         private Label label3;
         private Label label4;
-        private TextBox textBox2;
-        private Button button1;
+        private TextBox tbPassword;
+        private Button btnLogin;
+        private PictureBox pictureBox1;
     }
 }
