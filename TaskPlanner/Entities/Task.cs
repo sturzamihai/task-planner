@@ -8,15 +8,6 @@ using TaskPlanner.Entities.Users;
 
 namespace TaskPlanner.Entities
 {
-    public enum TaskStatus
-    {
-        Backlog,
-        ToDo,
-        InProgress,
-        InReview,
-        Done
-    }
-
     public class Task
     {
         public int Id { get; set; }
@@ -26,7 +17,8 @@ namespace TaskPlanner.Entities
 
         public string? Description { get; set; }
 
-        public User? Asignee { get; set; }
+        [Required]
+        public User Asignee { get; set; }
 
         [Required]
         public TaskStatus Status { get; set; }

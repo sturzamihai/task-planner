@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using TaskPlanner.Departments;
 using TaskPlanner.Entities;
 using TaskPlanner.Entities.Users;
+using TaskPlanner.Forms;
 using TaskPlanner.Persistance;
 using TaskPlanner.Projects;
 using TaskPlanner.Users;
@@ -31,6 +32,7 @@ namespace TaskPlanner
             else
             {
                 this.Close();
+                return;
             }
 
             this.tsLabelUser.Text = $"Active user: {this.activeUser.Name}";
@@ -95,13 +97,10 @@ namespace TaskPlanner
             dgTasks.Visible = true;
             foreach (Entities.Task task in selectedProject.Tasks)
             {
-                dgTasks.Rows.Add(task);
+                dataContext.Entry(task).Reference(t => t.Status).Load();
+                dataContext.Entry(task).Reference(t => t.Asignee).Load();
+                dgTasks.Rows.Add(new String[] { task.Id.ToString(), task.Status.Name, task.Title, task.Asignee.Name, "Edit" });
             }
-        }
-
-        private void dgTasks_UserAddedRow(object sender, DataGridViewRowEventArgs e)
-        {
-            dataContext.SaveChanges();
         }
 
         private void lbProjects_MouseDown(object sender, MouseEventArgs e)
@@ -143,6 +142,17 @@ namespace TaskPlanner
             taskTimer.Stop();
 
             // TODO: Insert in Task
+        }
+
+        private void btnAddTask_Click(object sender, EventArgs e)
+        {
+            List<Project> projects = dataContext.Projects.ToList();
+            AddTaskForm addTaskForm = new AddTaskForm(projects, dataContext.Users.ToList());
+            if (addTaskForm.ShowDialog() == DialogResult.OK)
+            {
+                projects[addTaskForm.SelectedProject].Tasks.Add(addTaskForm.NewTask);
+                dataContext.SaveChanges();
+            }
         }
     }
 }

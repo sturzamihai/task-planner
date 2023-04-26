@@ -24,8 +24,9 @@ namespace TaskPlanner.Persistance
         public DataContext()
         {
             var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
-            DbPath = System.IO.Path.Join(path, "app.db");
+            var path = Path.Combine(Environment.GetFolderPath(folder), "TaskPlanner");
+            Directory.CreateDirectory(path);
+            DbPath = System.IO.Path.Join(path, "storage.db");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)

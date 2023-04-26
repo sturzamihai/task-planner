@@ -30,14 +30,12 @@
         {
             components = new System.ComponentModel.Container();
             menuStrip = new MenuStrip();
-            fileToolStripMenuItem = new ToolStripMenuItem();
             usersToolStripMenuItem = new ToolStripMenuItem();
             addUserToolStripMenuItem = new ToolStripMenuItem();
             addDepartmentToolStripMenuItem = new ToolStripMenuItem();
             manageUsersToolStripMenuItem = new ToolStripMenuItem();
-            timeToolStripMenuItem = new ToolStripMenuItem();
-            startTrackingToolStripMenuItem = new ToolStripMenuItem();
-            stopTrackingToolStripMenuItem = new ToolStripMenuItem();
+            projectsToolStripMenuItem = new ToolStripMenuItem();
+            manageTaskStatusesToolStripMenuItem = new ToolStripMenuItem();
             btnAddTask = new Button();
             Project = new DataGridViewTextBoxColumn();
             label1 = new Label();
@@ -53,16 +51,22 @@
             labelProjEnd = new Label();
             labelProjStart = new Label();
             dgTasks = new DataGridView();
-            colId = new DataGridViewTextBoxColumn();
-            colName = new DataGridViewTextBoxColumn();
-            colDescription = new DataGridViewTextBoxColumn();
             labelProjDesc = new Label();
             labelProjName = new Label();
+            tbInsights = new TabPage();
             btnAddProj = new Button();
             statusStrip = new StatusStrip();
+            toolStripSplitButton1 = new ToolStripSplitButton();
+            startTrackingToolStripMenuItem = new ToolStripMenuItem();
+            stopTrackingToolStripMenuItem = new ToolStripMenuItem();
             tsTimeLabel = new ToolStripStatusLabel();
-            taskTimer = new System.Windows.Forms.Timer(components);
             tsLabelUser = new ToolStripStatusLabel();
+            taskTimer = new System.Windows.Forms.Timer(components);
+            colId = new DataGridViewTextBoxColumn();
+            colStatus = new DataGridViewTextBoxColumn();
+            colTitle = new DataGridViewTextBoxColumn();
+            colAsignee = new DataGridViewTextBoxColumn();
+            colActions = new DataGridViewButtonColumn();
             menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)projectBindingSource).BeginInit();
             cmProjects.SuspendLayout();
@@ -75,18 +79,12 @@
             // 
             // menuStrip
             // 
-            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, usersToolStripMenuItem, timeToolStripMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { usersToolStripMenuItem, projectsToolStripMenuItem });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Size = new Size(800, 24);
             menuStrip.TabIndex = 1;
             menuStrip.Text = "menuStrip1";
-            // 
-            // fileToolStripMenuItem
-            // 
-            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            fileToolStripMenuItem.Size = new Size(37, 20);
-            fileToolStripMenuItem.Text = "File";
             // 
             // usersToolStripMenuItem
             // 
@@ -115,26 +113,18 @@
             manageUsersToolStripMenuItem.Size = new Size(161, 22);
             manageUsersToolStripMenuItem.Text = "Manage users";
             // 
-            // timeToolStripMenuItem
+            // projectsToolStripMenuItem
             // 
-            timeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { startTrackingToolStripMenuItem, stopTrackingToolStripMenuItem });
-            timeToolStripMenuItem.Name = "timeToolStripMenuItem";
-            timeToolStripMenuItem.Size = new Size(45, 20);
-            timeToolStripMenuItem.Text = "Time";
+            projectsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { manageTaskStatusesToolStripMenuItem });
+            projectsToolStripMenuItem.Name = "projectsToolStripMenuItem";
+            projectsToolStripMenuItem.Size = new Size(61, 20);
+            projectsToolStripMenuItem.Text = "Projects";
             // 
-            // startTrackingToolStripMenuItem
+            // manageTaskStatusesToolStripMenuItem
             // 
-            startTrackingToolStripMenuItem.Name = "startTrackingToolStripMenuItem";
-            startTrackingToolStripMenuItem.Size = new Size(144, 22);
-            startTrackingToolStripMenuItem.Text = "Start tracking";
-            startTrackingToolStripMenuItem.Click += startTrackingToolStripMenuItem_Click;
-            // 
-            // stopTrackingToolStripMenuItem
-            // 
-            stopTrackingToolStripMenuItem.Name = "stopTrackingToolStripMenuItem";
-            stopTrackingToolStripMenuItem.Size = new Size(144, 22);
-            stopTrackingToolStripMenuItem.Text = "Stop tracking";
-            stopTrackingToolStripMenuItem.Click += stopTrackingToolStripMenuItem_Click;
+            manageTaskStatusesToolStripMenuItem.Name = "manageTaskStatusesToolStripMenuItem";
+            manageTaskStatusesToolStripMenuItem.Size = new Size(186, 22);
+            manageTaskStatusesToolStripMenuItem.Text = "Manage task statuses";
             // 
             // btnAddTask
             // 
@@ -144,6 +134,7 @@
             btnAddTask.TabIndex = 2;
             btnAddTask.Text = "(+) Add task";
             btnAddTask.UseVisualStyleBackColor = true;
+            btnAddTask.Click += btnAddTask_Click;
             // 
             // Project
             // 
@@ -199,6 +190,7 @@
             // tcProject
             // 
             tcProject.Controls.Add(tpOverview);
+            tcProject.Controls.Add(tbInsights);
             tcProject.Location = new Point(193, 27);
             tcProject.Name = "tcProject";
             tcProject.SelectedIndex = 0;
@@ -261,31 +253,17 @@
             // 
             // dgTasks
             // 
+            dgTasks.AllowUserToAddRows = false;
+            dgTasks.AllowUserToDeleteRows = false;
             dgTasks.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgTasks.Columns.AddRange(new DataGridViewColumn[] { colId, colName, colDescription });
+            dgTasks.Columns.AddRange(new DataGridViewColumn[] { colId, colStatus, colTitle, colAsignee, colActions });
             dgTasks.Location = new Point(9, 119);
             dgTasks.Name = "dgTasks";
+            dgTasks.ReadOnly = true;
             dgTasks.RowTemplate.Height = 25;
             dgTasks.Size = new Size(572, 150);
             dgTasks.TabIndex = 2;
             dgTasks.Visible = false;
-            dgTasks.UserAddedRow += dgTasks_UserAddedRow;
-            // 
-            // colId
-            // 
-            colId.HeaderText = "ID";
-            colId.Name = "colId";
-            colId.ReadOnly = true;
-            // 
-            // colName
-            // 
-            colName.HeaderText = "Title";
-            colName.Name = "colName";
-            // 
-            // colDescription
-            // 
-            colDescription.HeaderText = "Description";
-            colDescription.Name = "colDescription";
             // 
             // labelProjDesc
             // 
@@ -307,6 +285,16 @@
             labelProjName.TabIndex = 0;
             labelProjName.Text = "No project selected";
             // 
+            // tbInsights
+            // 
+            tbInsights.Location = new Point(4, 24);
+            tbInsights.Name = "tbInsights";
+            tbInsights.Padding = new Padding(3);
+            tbInsights.Size = new Size(587, 383);
+            tbInsights.TabIndex = 1;
+            tbInsights.Text = "Insights";
+            tbInsights.UseVisualStyleBackColor = true;
+            // 
             // btnAddProj
             // 
             btnAddProj.Location = new Point(12, 412);
@@ -319,12 +307,36 @@
             // 
             // statusStrip
             // 
-            statusStrip.Items.AddRange(new ToolStripItem[] { tsTimeLabel, tsLabelUser });
+            statusStrip.Items.AddRange(new ToolStripItem[] { toolStripSplitButton1, tsTimeLabel, tsLabelUser });
             statusStrip.Location = new Point(0, 447);
             statusStrip.Name = "statusStrip";
             statusStrip.Size = new Size(800, 22);
             statusStrip.TabIndex = 8;
             statusStrip.Text = "statusStrip1";
+            // 
+            // toolStripSplitButton1
+            // 
+            toolStripSplitButton1.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripSplitButton1.DropDownItems.AddRange(new ToolStripItem[] { startTrackingToolStripMenuItem, stopTrackingToolStripMenuItem });
+            toolStripSplitButton1.Image = Properties.Resources.TimeTrackerIcon;
+            toolStripSplitButton1.ImageTransparentColor = Color.Magenta;
+            toolStripSplitButton1.Name = "toolStripSplitButton1";
+            toolStripSplitButton1.Size = new Size(32, 20);
+            toolStripSplitButton1.Text = "toolStripSplitButton1";
+            // 
+            // startTrackingToolStripMenuItem
+            // 
+            startTrackingToolStripMenuItem.Name = "startTrackingToolStripMenuItem";
+            startTrackingToolStripMenuItem.Size = new Size(144, 22);
+            startTrackingToolStripMenuItem.Text = "Start tracking";
+            startTrackingToolStripMenuItem.Click += startTrackingToolStripMenuItem_Click;
+            // 
+            // stopTrackingToolStripMenuItem
+            // 
+            stopTrackingToolStripMenuItem.Name = "stopTrackingToolStripMenuItem";
+            stopTrackingToolStripMenuItem.Size = new Size(144, 22);
+            stopTrackingToolStripMenuItem.Text = "Stop tracking";
+            stopTrackingToolStripMenuItem.Click += stopTrackingToolStripMenuItem_Click;
             // 
             // tsTimeLabel
             // 
@@ -332,18 +344,49 @@
             tsTimeLabel.Size = new Size(183, 17);
             tsTimeLabel.Text = "Time tracked: <No timer started>";
             // 
+            // tsLabelUser
+            // 
+            tsLabelUser.Name = "tsLabelUser";
+            tsLabelUser.Size = new Size(570, 17);
+            tsLabelUser.Spring = true;
+            tsLabelUser.Text = "Active user: <Loading...>";
+            tsLabelUser.TextAlign = ContentAlignment.MiddleRight;
+            // 
             // taskTimer
             // 
             taskTimer.Interval = 1000;
             taskTimer.Tick += taskTimer_Tick;
             // 
-            // tsLabelUser
+            // colId
             // 
-            tsLabelUser.Name = "tsLabelUser";
-            tsLabelUser.Size = new Size(571, 17);
-            tsLabelUser.Spring = true;
-            tsLabelUser.Text = "Active user: <Loading...>";
-            tsLabelUser.TextAlign = ContentAlignment.MiddleRight;
+            colId.HeaderText = "ID";
+            colId.Name = "colId";
+            colId.ReadOnly = true;
+            // 
+            // colStatus
+            // 
+            colStatus.HeaderText = "Status";
+            colStatus.Name = "colStatus";
+            colStatus.ReadOnly = true;
+            // 
+            // colTitle
+            // 
+            colTitle.HeaderText = "Title";
+            colTitle.Name = "colTitle";
+            colTitle.ReadOnly = true;
+            // 
+            // colAsignee
+            // 
+            colAsignee.HeaderText = "Asignee";
+            colAsignee.Name = "colAsignee";
+            colAsignee.ReadOnly = true;
+            // 
+            // colActions
+            // 
+            colActions.HeaderText = "Actions";
+            colActions.Name = "colActions";
+            colActions.ReadOnly = true;
+            colActions.Text = "";
             // 
             // TaskPlanner
             // 
@@ -380,7 +423,6 @@
         #endregion
 
         private MenuStrip menuStrip;
-        private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem usersToolStripMenuItem;
         private ToolStripMenuItem addUserToolStripMenuItem;
         private ToolStripMenuItem addDepartmentToolStripMenuItem;
@@ -402,16 +444,21 @@
         private Label labelProjStart;
         private StatusStrip statusStrip;
         private ToolStripStatusLabel tsTimeLabel;
-        private ToolStripMenuItem timeToolStripMenuItem;
-        private ToolStripMenuItem startTrackingToolStripMenuItem;
-        private ToolStripMenuItem stopTrackingToolStripMenuItem;
         private System.Windows.Forms.Timer taskTimer;
-        private DataGridViewTextBoxColumn colId;
-        private DataGridViewTextBoxColumn colName;
-        private DataGridViewTextBoxColumn colDescription;
         private ContextMenuStrip cmProjects;
         private ToolStripMenuItem settingsToolStripMenuItem;
         private ToolStripMenuItem deleteToolStripMenuItem;
         private ToolStripStatusLabel tsLabelUser;
+        private TabPage tbInsights;
+        private ToolStripSplitButton toolStripSplitButton1;
+        private ToolStripMenuItem startTrackingToolStripMenuItem;
+        private ToolStripMenuItem stopTrackingToolStripMenuItem;
+        private ToolStripMenuItem projectsToolStripMenuItem;
+        private ToolStripMenuItem manageTaskStatusesToolStripMenuItem;
+        private DataGridViewTextBoxColumn colId;
+        private DataGridViewTextBoxColumn colStatus;
+        private DataGridViewTextBoxColumn colTitle;
+        private DataGridViewTextBoxColumn colAsignee;
+        private DataGridViewButtonColumn colActions;
     }
 }

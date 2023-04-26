@@ -7,7 +7,7 @@ using TaskPlanner.Entities.Users;
 
 namespace TaskPlanner.Persistance.Repositories
 {
-    internal class UserRepository
+    public interface UserRepository
     {
     }
 }
