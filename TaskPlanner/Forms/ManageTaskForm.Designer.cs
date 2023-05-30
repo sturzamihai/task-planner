@@ -1,6 +1,6 @@
 ﻿namespace TaskPlanner.Forms
 {
-    partial class AddTaskForm
+    partial class ManageTaskForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
+            labelFormName = new Label();
             label4 = new Label();
             cbProject = new ComboBox();
             label2 = new Label();
@@ -42,15 +42,15 @@
             btnAdd = new Button();
             SuspendLayout();
             // 
-            // label1
+            // labelFormName
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(9, 9);
-            label1.Name = "label1";
-            label1.Size = new Size(139, 25);
-            label1.TabIndex = 2;
-            label1.Text = "Add a new task";
+            labelFormName.AutoSize = true;
+            labelFormName.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            labelFormName.Location = new Point(9, 9);
+            labelFormName.Name = "labelFormName";
+            labelFormName.Size = new Size(139, 25);
+            labelFormName.TabIndex = 2;
+            labelFormName.Text = "Add a new task";
             // 
             // label4
             // 
@@ -150,7 +150,7 @@
             btnAdd.UseVisualStyleBackColor = true;
             btnAdd.Click += btnAdd_Click;
             // 
-            // AddTaskForm
+            // ManageTaskForm
             // 
             AcceptButton = btnAdd;
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -167,8 +167,8 @@
             Controls.Add(tbName);
             Controls.Add(label4);
             Controls.Add(cbProject);
-            Controls.Add(label1);
-            Name = "AddTaskForm";
+            Controls.Add(labelFormName);
+            Name = "ManageTaskForm";
             Text = "Add Task - Task Planner";
             Load += AddTaskForm_Load;
             ResumeLayout(false);
@@ -177,7 +177,7 @@
 
         #endregion
 
-        private Label label1;
+        private Label labelFormName;
         private Label label4;
         private ComboBox cbProject;
         private Label label2;

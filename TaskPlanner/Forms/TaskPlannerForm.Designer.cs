@@ -62,10 +62,10 @@
             tsTimeLabel = new ToolStripStatusLabel();
             tsLabelUser = new ToolStripStatusLabel();
             taskTimer = new System.Windows.Forms.Timer(components);
-            colId = new DataGridViewTextBoxColumn();
             colStatus = new DataGridViewTextBoxColumn();
             colTitle = new DataGridViewTextBoxColumn();
             colAsignee = new DataGridViewTextBoxColumn();
+            colTimeTracked = new DataGridViewTextBoxColumn();
             colActions = new DataGridViewButtonColumn();
             menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)projectBindingSource).BeginInit();
@@ -256,14 +256,15 @@
             dgTasks.AllowUserToAddRows = false;
             dgTasks.AllowUserToDeleteRows = false;
             dgTasks.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgTasks.Columns.AddRange(new DataGridViewColumn[] { colId, colStatus, colTitle, colAsignee, colActions });
-            dgTasks.Location = new Point(9, 119);
+            dgTasks.Columns.AddRange(new DataGridViewColumn[] { colStatus, colTitle, colAsignee, colTimeTracked, colActions });
+            dgTasks.Location = new Point(9, 102);
             dgTasks.Name = "dgTasks";
             dgTasks.ReadOnly = true;
             dgTasks.RowTemplate.Height = 25;
-            dgTasks.Size = new Size(572, 150);
+            dgTasks.Size = new Size(572, 275);
             dgTasks.TabIndex = 2;
             dgTasks.Visible = false;
+            dgTasks.CellContentClick += dgTasks_CellContentClick;
             // 
             // labelProjDesc
             // 
@@ -357,12 +358,6 @@
             taskTimer.Interval = 1000;
             taskTimer.Tick += taskTimer_Tick;
             // 
-            // colId
-            // 
-            colId.HeaderText = "ID";
-            colId.Name = "colId";
-            colId.ReadOnly = true;
-            // 
             // colStatus
             // 
             colStatus.HeaderText = "Status";
@@ -380,6 +375,12 @@
             colAsignee.HeaderText = "Asignee";
             colAsignee.Name = "colAsignee";
             colAsignee.ReadOnly = true;
+            // 
+            // colTimeTracked
+            // 
+            colTimeTracked.HeaderText = "Time Tracked";
+            colTimeTracked.Name = "colTimeTracked";
+            colTimeTracked.ReadOnly = true;
             // 
             // colActions
             // 
@@ -455,10 +456,10 @@
         private ToolStripMenuItem stopTrackingToolStripMenuItem;
         private ToolStripMenuItem projectsToolStripMenuItem;
         private ToolStripMenuItem manageTaskStatusesToolStripMenuItem;
-        private DataGridViewTextBoxColumn colId;
         private DataGridViewTextBoxColumn colStatus;
         private DataGridViewTextBoxColumn colTitle;
         private DataGridViewTextBoxColumn colAsignee;
+        private DataGridViewTextBoxColumn colTimeTracked;
         private DataGridViewButtonColumn colActions;
     }
 }

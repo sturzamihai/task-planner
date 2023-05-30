@@ -15,8 +15,15 @@ namespace TaskPlanner.Entities
         [Required]
         public User User { get; set; }
 
-        // In seconds
         [Required]
-        public int Interval { get; set; } = 0;
+        public DateTime StartTime { get; set; }
+
+        [Required]
+        public DateTime EndTime { get; set; }
+
+        public TimeSpan Interval()
+        {
+            return EndTime.Subtract(StartTime);
+        }
     }
 }

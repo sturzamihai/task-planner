@@ -14,7 +14,8 @@ namespace TaskPlanner
     {
         private DataContext dataContext;
         private User activeUser;
-        TrackedTime trackedTime = new TrackedTime();
+        private Project selectedProject;
+        TrackedTime trackedTime;
 
         public TaskPlanner(DataContext dataContext)
         {
@@ -78,12 +79,18 @@ namespace TaskPlanner
 
         private void lbProjects_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Project selectedProject = (Project)lbProjects.SelectedItem;
+            selectedProject = (Project)lbProjects.SelectedItem;
 
             if (selectedProject == null) return;
 
+            refreshProjectDisplay();
+        }
+
+        private void refreshProjectDisplay()
+        {
             dataContext.Entry(selectedProject).Reference(p => p.Client).Load();
             dataContext.Entry(selectedProject).Collection(p => p.Tasks).Load();
+            dataContext.Entry(selectedProject).Collection(p => p.AllowedStatuses).Load();
 
             labelProjName.Text = selectedProject.Title;
             labelProjDesc.Text = selectedProject.Description;
@@ -95,11 +102,13 @@ namespace TaskPlanner
             labelProjClient.Text = selectedProject.Client != null ? $"Client: {selectedProject.Client.Name}" : String.Empty;
 
             dgTasks.Visible = true;
+            dgTasks.Rows.Clear();
             foreach (Entities.Task task in selectedProject.Tasks)
             {
                 dataContext.Entry(task).Reference(t => t.Status).Load();
                 dataContext.Entry(task).Reference(t => t.Asignee).Load();
-                dgTasks.Rows.Add(new String[] { task.Id.ToString(), task.Status.Name, task.Title, task.Asignee.Name, "Edit" });
+                dataContext.Entry(task).Collection(t => t.TimesTracked).Load();
+                dgTasks.Rows.Add(new String[] { task.Status.Title, task.Title, task.Asignee.Name, task.CalculateTrackedTime().ToString(), "Edit" });
             }
         }
 
@@ -117,7 +126,7 @@ namespace TaskPlanner
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Project selectedProject = (Project)lbProjects.SelectedItem;
+            selectedProject = (Project)lbProjects.SelectedItem;
 
             if (selectedProject == null) return;
 
@@ -127,31 +136,63 @@ namespace TaskPlanner
 
         private void taskTimer_Tick(object sender, EventArgs e)
         {
-            trackedTime.Interval += 1;
-            tsTimeLabel.Text = $"Time tracked: {trackedTime.Interval} seconds";
+            trackedTime.EndTime = DateTime.Now;
+            tsTimeLabel.Text = $"Time tracked: {trackedTime.Interval()}";
         }
 
         private void startTrackingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             taskTimer.Start();
-            trackedTime.Interval = 0;
+            trackedTime = new TrackedTime();
+            trackedTime.StartTime = DateTime.Now;
         }
 
         private void stopTrackingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             taskTimer.Stop();
 
-            // TODO: Insert in Task
+            if (trackedTime == null)
+            {
+                MessageBox.Show("You have not started a timer yet.");
+                return;
+            }
+
+            trackedTime.EndTime = DateTime.Now;
+            trackedTime.User = activeUser;
+
+            TrackTimeForm trackTimeForm = new TrackTimeForm(dataContext.Tasks.ToList(), trackedTime);
+            if (trackTimeForm.ShowDialog() == DialogResult.OK)
+            {
+                dataContext.SaveChanges();
+            }
+
         }
 
         private void btnAddTask_Click(object sender, EventArgs e)
         {
             List<Project> projects = dataContext.Projects.ToList();
-            AddTaskForm addTaskForm = new AddTaskForm(projects, dataContext.Users.ToList());
+            projects.ForEach(project => dataContext.Entry(project).Collection(p => p.AllowedStatuses).Load());
+
+            ManageTaskForm addTaskForm = new ManageTaskForm(projects, dataContext.Users.ToList());
             if (addTaskForm.ShowDialog() == DialogResult.OK)
             {
                 projects[addTaskForm.SelectedProject].Tasks.Add(addTaskForm.NewTask);
                 dataContext.SaveChanges();
+            }
+        }
+
+        private void dgTasks_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var senderDG = (DataGridView)sender;
+
+            if (senderDG.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0 && selectedProject.Tasks.Count > e.RowIndex)
+            {
+                ManageTaskForm editTaskForm = new ManageTaskForm(selectedProject.Tasks[e.RowIndex], dataContext.Users.ToList());
+                if (editTaskForm.ShowDialog() == DialogResult.OK)
+                {
+                    dataContext.SaveChanges();
+                    refreshProjectDisplay();
+                }
             }
         }
     }

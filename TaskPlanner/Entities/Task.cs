@@ -26,15 +26,17 @@ namespace TaskPlanner.Entities
         public List<TrackedTime> TimesTracked { get; set; } = new List<TrackedTime>();
 
         // Returns tracked time in seconds for this Task
-        public int CalculateTrackedTime()
+        public TimeSpan CalculateTrackedTime()
         {
-            int trackedSeconds = 0;
+            TimeSpan trackedSeconds = new TimeSpan(0);
             foreach(TrackedTime time in TimesTracked)
             {
-                trackedSeconds += time.Interval;
+                trackedSeconds += time.Interval();
             }
 
             return trackedSeconds;
         }
+
+        public Project Project { get; set; }
     }
 }

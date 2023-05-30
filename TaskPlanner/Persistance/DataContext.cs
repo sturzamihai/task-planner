@@ -12,6 +12,7 @@ namespace TaskPlanner.Persistance
     {
         public DbSet<Project> Projects { get; set; }
         public DbSet<Entities.Task> Tasks { get; set; }
+        public DbSet<TrackedTime> TrackedTimes { get; set; }
         public DbSet<Department> Departments { get; set; }
 
         public DbSet<User> Users { get; set; }

@@ -29,12 +29,6 @@ namespace TaskPlanner.Entities
 
         public Client? Client { get; set; }
 
-        public List<TaskStatus> TaskStatuses { get; set; } = new List<TaskStatus>
-        {
-            new TaskStatus { Name = "Backlog" },
-            new TaskStatus { Name = "To do"},
-            new TaskStatus {Name = "In progress"},
-            new TaskStatus { Name = "Done"},
-        };
+        public List<TaskStatus> AllowedStatuses { get; set; } = new List<TaskStatus>();
     }
 }
