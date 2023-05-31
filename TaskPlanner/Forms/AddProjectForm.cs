@@ -86,7 +86,13 @@ namespace TaskPlanner.Projects
                 End = dtEnd.Value,
                 Departments = selectedDepartments,
                 Tasks = new List<Entities.Task>(),
-                Client = selectedClient
+                Client = selectedClient,
+                AllowedStatuses = new List<Entities.TaskStatus> {
+                    new Entities.TaskStatus { Title = "Backlog" },
+                    new Entities.TaskStatus { Title = "To do" },
+                    new Entities.TaskStatus { Title = "In progress" },
+                    new Entities.TaskStatus { Title = "Done" },
+                }
             };
 
             this.DialogResult = DialogResult.OK;

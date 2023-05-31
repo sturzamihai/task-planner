@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskPlanner.Persistance;
 
@@ -10,9 +11,11 @@ using TaskPlanner.Persistance;
 namespace TaskPlanner.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230530202017_Refactor1")]
+    partial class Refactor1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -79,7 +82,7 @@ namespace TaskPlanner.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ProjectId")
+                    b.Property<int?>("ProjectId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("StatusId")
@@ -147,7 +150,7 @@ namespace TaskPlanner.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TrackedTimes");
+                    b.ToTable("TrackedTime");
                 });
 
             modelBuilder.Entity("TaskPlanner.Entities.Users.User", b =>
@@ -231,11 +234,9 @@ namespace TaskPlanner.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TaskPlanner.Entities.Project", "Project")
+                    b.HasOne("TaskPlanner.Entities.Project", null)
                         .WithMany("Tasks")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProjectId");
 
                     b.HasOne("TaskPlanner.Entities.TaskStatus", "Status")
                         .WithMany()
@@ -244,8 +245,6 @@ namespace TaskPlanner.Migrations
                         .IsRequired();
 
                     b.Navigation("Asignee");
-
-                    b.Navigation("Project");
 
                     b.Navigation("Status");
                 });

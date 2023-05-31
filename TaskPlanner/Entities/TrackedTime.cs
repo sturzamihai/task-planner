@@ -8,15 +8,30 @@ using TaskPlanner.Entities.Users;
 
 namespace TaskPlanner.Entities
 {
-    public class TrackedTime
+    public class TrackedTime : IComparable<TrackedTime>
     {
         public int Id { get; set; }
 
         [Required]
         public User User { get; set; }
 
-        // In seconds
         [Required]
-        public int Interval { get; set; } = 0;
+        public DateTime StartTime { get; set; }
+
+        [Required]
+        public DateTime EndTime { get; set; }
+
+        public int CompareTo(TrackedTime? other)
+        {
+            return this.Interval.CompareTo(other.Interval);
+        }
+
+        public TimeSpan Interval
+        {
+            get
+            {
+                return EndTime.Subtract(StartTime);
+            }
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskPlanner.Persistance;
 
@@ -10,9 +11,11 @@ using TaskPlanner.Persistance;
 namespace TaskPlanner.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230426160030_ProjectTaskStatuses")]
+    partial class ProjectTaskStatuses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -73,13 +76,13 @@ namespace TaskPlanner.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AsigneeId")
+                    b.Property<int?>("AsigneeId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ProjectId")
+                    b.Property<int?>("ProjectId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("StatusId")
@@ -109,12 +112,12 @@ namespace TaskPlanner.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ProjectId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("ProjectId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -129,11 +132,8 @@ namespace TaskPlanner.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Interval")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("TaskId")
                         .HasColumnType("INTEGER");
@@ -147,7 +147,7 @@ namespace TaskPlanner.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TrackedTimes");
+                    b.ToTable("TrackedTime");
                 });
 
             modelBuilder.Entity("TaskPlanner.Entities.Users.User", b =>
@@ -227,15 +227,11 @@ namespace TaskPlanner.Migrations
                 {
                     b.HasOne("TaskPlanner.Entities.Users.User", "Asignee")
                         .WithMany()
-                        .HasForeignKey("AsigneeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AsigneeId");
 
-                    b.HasOne("TaskPlanner.Entities.Project", "Project")
+                    b.HasOne("TaskPlanner.Entities.Project", null)
                         .WithMany("Tasks")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProjectId");
 
                     b.HasOne("TaskPlanner.Entities.TaskStatus", "Status")
                         .WithMany()
@@ -245,15 +241,13 @@ namespace TaskPlanner.Migrations
 
                     b.Navigation("Asignee");
 
-                    b.Navigation("Project");
-
                     b.Navigation("Status");
                 });
 
             modelBuilder.Entity("TaskPlanner.Entities.TaskStatus", b =>
                 {
                     b.HasOne("TaskPlanner.Entities.Project", null)
-                        .WithMany("AllowedStatuses")
+                        .WithMany("TaskStatuses")
                         .HasForeignKey("ProjectId");
                 });
 
@@ -286,9 +280,9 @@ namespace TaskPlanner.Migrations
 
             modelBuilder.Entity("TaskPlanner.Entities.Project", b =>
                 {
-                    b.Navigation("AllowedStatuses");
-
                     b.Navigation("Departments");
+
+                    b.Navigation("TaskStatuses");
 
                     b.Navigation("Tasks");
                 });

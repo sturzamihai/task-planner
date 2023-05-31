@@ -12,6 +12,7 @@ namespace TaskPlanner.Persistance
     {
         public DbSet<Project> Projects { get; set; }
         public DbSet<Entities.Task> Tasks { get; set; }
+        public DbSet<TrackedTime> TrackedTimes { get; set; }
         public DbSet<Department> Departments { get; set; }
 
         public DbSet<User> Users { get; set; }
@@ -24,8 +25,9 @@ namespace TaskPlanner.Persistance
         public DataContext()
         {
             var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
-            DbPath = System.IO.Path.Join(path, "app.db");
+            var path = Path.Combine(Environment.GetFolderPath(folder), "TaskPlanner");
+            Directory.CreateDirectory(path);
+            DbPath = System.IO.Path.Join(path, "storage.db");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
