@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using System.Drawing.Printing;
+using System.Drawing;
 using System.Windows.Forms;
+using System.Xml;
 using TaskPlanner.Departments;
 using TaskPlanner.Entities;
 using TaskPlanner.Entities.Users;
@@ -15,7 +18,7 @@ namespace TaskPlanner
         private DataContext dataContext;
         private User activeUser;
         private Project selectedProject;
-        TrackedTime trackedTime;
+        private TrackedTime trackedTime;
 
         public TaskPlanner(DataContext dataContext)
         {
@@ -79,15 +82,15 @@ namespace TaskPlanner
 
         private void lbProjects_SelectedIndexChanged(object sender, EventArgs e)
         {
-            selectedProject = (Project)lbProjects.SelectedItem;
-
-            if (selectedProject == null) return;
-
             refreshProjectDisplay();
         }
 
         private void refreshProjectDisplay()
         {
+            selectedProject = (Project)lbProjects.SelectedItem;
+
+            if (selectedProject == null) return;
+
             dataContext.Entry(selectedProject).Reference(p => p.Client).Load();
             dataContext.Entry(selectedProject).Collection(p => p.Tasks).Load();
             dataContext.Entry(selectedProject).Collection(p => p.AllowedStatuses).Load();
@@ -103,12 +106,57 @@ namespace TaskPlanner
 
             dgTasks.Visible = true;
             dgTasks.Rows.Clear();
+            lvHours.Items.Clear();
+
+            Dictionary<string, int> userTaskFrequency = new Dictionary<string, int>();
+            Dictionary<string, int> statusFrequency = new Dictionary<string, int>();
             foreach (Entities.Task task in selectedProject.Tasks)
             {
                 dataContext.Entry(task).Reference(t => t.Status).Load();
                 dataContext.Entry(task).Reference(t => t.Asignee).Load();
                 dataContext.Entry(task).Collection(t => t.TimesTracked).Load();
-                dgTasks.Rows.Add(new String[] { task.Status.Title, task.Title, task.Asignee.Name, task.CalculateTrackedTime().ToString(), "Edit" });
+                dgTasks.Rows.Add(new String[] { task.Status.Title, task.Title, task.Asignee.Name, task.CalculateTrackedTime().ToString(@"hh\:mm\:ss"), "Edit" });
+
+                if (userTaskFrequency.ContainsKey(task.Asignee.Name))
+                {
+                    userTaskFrequency[task.Asignee.Name]++;
+                }
+                else
+                {
+                    userTaskFrequency[task.Asignee.Name] = 1;
+                }
+
+                if (statusFrequency.ContainsKey(task.Status.Title))
+                {
+                    statusFrequency[task.Status.Title]++;
+                }
+                else
+                {
+                    statusFrequency[task.Status.Title] = 1;
+                }
+
+                foreach (TrackedTime time in task.TimesTracked)
+                {
+                    ListViewItem lvi = new ListViewItem(task.Title);
+                    lvi.SubItems.Add(time.User.Name);
+                    lvi.SubItems.Add(time.StartTime.ToString());
+                    lvi.SubItems.Add(time.EndTime.ToString());
+                    lvi.SubItems.Add(time.Interval.ToString());
+
+                    lvHours.Items.Add(lvi);
+                }
+            }
+
+            chartTasks.Series["TaskFrequency"].Points.Clear();
+            foreach (KeyValuePair<string, int> entry in userTaskFrequency)
+            {
+                chartTasks.Series["TaskFrequency"].Points.AddXY(entry.Key, entry.Value);
+            }
+
+            chartProgress.Series["ProjectProgress"].Points.Clear();
+            foreach (KeyValuePair<string, int> entry in statusFrequency)
+            {
+                chartProgress.Series["ProjectProgress"].Points.AddXY(entry.Key, entry.Value);
             }
         }
 
@@ -130,6 +178,8 @@ namespace TaskPlanner
 
             if (selectedProject == null) return;
 
+            if (MessageBox.Show($"You are about to delete {selectedProject.Title}. This action is irreversible.", "Please confirm your action", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No) return;
+
             dataContext.Remove(selectedProject);
             dataContext.SaveChanges();
         }
@@ -137,7 +187,7 @@ namespace TaskPlanner
         private void taskTimer_Tick(object sender, EventArgs e)
         {
             trackedTime.EndTime = DateTime.Now;
-            tsTimeLabel.Text = $"Time tracked: {trackedTime.Interval()}";
+            tsTimeLabel.Text = $"Time tracked: {trackedTime.Interval.ToString(@"hh\:mm\:ss")}";
         }
 
         private void startTrackingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -178,6 +228,7 @@ namespace TaskPlanner
             {
                 projects[addTaskForm.SelectedProject].Tasks.Add(addTaskForm.NewTask);
                 dataContext.SaveChanges();
+                refreshProjectDisplay();
             }
         }
 
@@ -194,6 +245,50 @@ namespace TaskPlanner
                     refreshProjectDisplay();
                 }
             }
+        }
+
+        private void exportXMLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            selectedProject = (Project)lbProjects.SelectedItem;
+
+            if (selectedProject == null) return;
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "XML files (*.xml)|*.xml";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                using (XmlWriter writer = XmlWriter.Create(saveFileDialog.FileName))
+                {
+                    Entities.Project.SerializeToXML(selectedProject, writer);
+                }
+            }
+        }
+
+        Bitmap printBitmap;
+
+        private void printPreviewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Panel panel = new Panel();
+            this.Controls.Add(panel);
+
+            Graphics grp = panel.CreateGraphics();
+            Size formSize = this.ClientSize;
+
+            printBitmap = new Bitmap(formSize.Width, formSize.Height, grp);
+            grp = Graphics.FromImage(printBitmap);
+            Point panelLocation = PointToScreen(panel.Location);
+            grp.CopyFromScreen(panelLocation.X, panelLocation.Y, 0, 0, formSize);
+
+            PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
+            printPreviewDialog.Document = printDocument;
+            printPreviewDialog.PrintPreviewControl.Zoom = 1;
+            printPreviewDialog.ShowDialog();
+        }
+
+        private void printDocument_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            e.Graphics.DrawImage(printBitmap, 0, 0);
         }
     }
 }

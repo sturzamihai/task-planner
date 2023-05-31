@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using TaskPlanner.Entities.Users;
 
 namespace TaskPlanner.Entities
@@ -31,12 +32,21 @@ namespace TaskPlanner.Entities
             TimeSpan trackedSeconds = new TimeSpan(0);
             foreach(TrackedTime time in TimesTracked)
             {
-                trackedSeconds += time.Interval();
+                trackedSeconds += time.Interval;
             }
 
             return trackedSeconds;
         }
 
         public Project Project { get; set; }
+
+        public static void SerializeToXML(Task task, XmlWriter writer)
+        {
+            writer.WriteStartElement("Task");
+            writer.WriteElementString("Title", task.Title);
+            writer.WriteElementString("Asignee", task.Asignee.Name);
+            writer.WriteElementString("Status", task.Status.Title);
+            writer.WriteEndElement();
+        }
     }
 }

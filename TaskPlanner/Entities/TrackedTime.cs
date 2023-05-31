@@ -8,7 +8,7 @@ using TaskPlanner.Entities.Users;
 
 namespace TaskPlanner.Entities
 {
-    public class TrackedTime
+    public class TrackedTime : IComparable<TrackedTime>
     {
         public int Id { get; set; }
 
@@ -21,9 +21,17 @@ namespace TaskPlanner.Entities
         [Required]
         public DateTime EndTime { get; set; }
 
-        public TimeSpan Interval()
+        public int CompareTo(TrackedTime? other)
         {
-            return EndTime.Subtract(StartTime);
+            return this.Interval.CompareTo(other.Interval);
+        }
+
+        public TimeSpan Interval
+        {
+            get
+            {
+                return EndTime.Subtract(StartTime);
+            }
         }
     }
 }
